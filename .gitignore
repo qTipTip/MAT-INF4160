@@ -3,3 +3,9 @@
 *.log
 *.fdb_latexmk
 *.synctex.gz
+*.DS_Store
+*.bbl
+*.bcl
+*.blg
+*.run.xml
+*.bcf
