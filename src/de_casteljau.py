@@ -1,13 +1,7 @@
-"""
-Given an (m x n)-matrix of controlpoints c_ij and two parameters u, v,
-computes the value of the Bezier surface with controlpoints c_ij at the
-point (u, v).
-
-Notice that u, v is typically parametrized by s, t in some arbitrary
-parameter rectangle [a1, b1]x[a2, b2]
-"""
-
 import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
 
 def decasteljau(control_points, u, v):
     """
@@ -47,9 +41,26 @@ def decasteljau(control_points, u, v):
 
 if __name__ == "__main__":
 
-    control_points = np.array([
-        [0, 0, 0, 6],
-        [18, 2, 0, 8],
-        [4, 0, 4, 18]
-        ])
-    print decasteljau(control_points, 0.5, 2./3)
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+#    ax.set_axis_off()
+    
+    cp_dim = (10, 15)
+    control_points = np.random.random(size=cp_dim)
+    
+    # computing control_points
+    # ax.scatter3D(control_points[:, 0], control_points[:, 1], control_points[:, 2])
+    n = 30
+    m = 30
+
+    s_values = np.linspace(0, 1, n)  
+    t_values = np.linspace(0, 1, m)
+    S, T = np.meshgrid(s_values, t_values)
+    R = np.zeros((n, m))
+
+    # computing the n*m surface points and plotting them
+    for i, s in enumerate(s_values):
+        for j, t in enumerate(t_values):
+            R[i, j] = decasteljau(control_points, s, t)
+    ax.plot_surface(S, T, R, rstride=1,cstride=1, cmap=cm.viridis)
+    plt.show()
